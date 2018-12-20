@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Panel heading</div>
+            <div class="panel-body">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="form-label">id</label>
+                        <input type="text" class="form-control" v-model="id">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">name</label>
+                        <input type="text" class="form-control" v-model="name">
+                    </div>
+                    <div class="form-group">
+                        <input type="button" value="添加" class="btn btn-default btn-primary" @click="add()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">输入要查询的</label>
+                        <input type="text" class="form-control" v-model="inquire">
+                    </div>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>Ctime</th>
+                            <th>Operation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="ltem in inquires(inquire)" :key="ltem.id">
+                            <th scope="row">{{ltem.id}}</th>
+                            <td>{{ltem.name}}</td>
+                            <td>{{ltem.time}}</td>
+                            <td><a href="javascript:;" @click.prevent="del(ltem.id)">删除</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</body>
+
+</html>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            id: "",
+            name: "",
+            inquire:"",
+            information: [{
+                    id: 1,
+                    name: "盖聂",
+                    time: new Date()
+                },
+                {
+                    id: 2,
+                    name: "天明",
+                    time: new Date()
+                },
+                {
+                    id: 3,
+                    name: "项羽",
+                    time: new Date()
+                },
+                {
+                    id: 4,
+                    name: "雪姬",
+                    time: new Date()
+                },
+                {
+                    id: 5,
+                    name: "李斯",
+                    time: new Date()
+                }
+            ]
+        },
+
+        methods: {
+            inquires (inquire){
+                var Array = []
+                this.information.forEach(element => {
+                    if(element.name.indexOf(inquire.trim()) != -1){
+                        Array.push(element)
+                    }
+                });
+                return Array
+            },
+            add() {
+                this.information.push({id:this.id,name:this.name,time:new Date()})
+                this.id= this.name=""
+            },
+            del(id) {
+                this.information.some((ltem,index) => {
+                    if(ltem.id == id){
+                        this.information.splice(index,1)
+                        return true
+                    }
+                })
+            }
+        }
+    })
+</script>
