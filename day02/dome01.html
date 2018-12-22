@@ -9,6 +9,11 @@
 
     <script src="../vue.js"></script>
     <link rel="stylesheet" href="../bootstrap.css">
+    <style>
+        #app{
+            font-weight: 700
+        }
+    </style>
 </head>
 
 <body>
@@ -24,14 +29,14 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">name</label>
-                        <input type="text" class="form-control" v-model="name">
+                        <input type="text" class="form-control" v-model="name" v-on:keyup.enter="add">
                     </div>
                     <div class="form-group">
                         <input type="button" value="添加" class="btn btn-default btn-primary" @click="add()">
                     </div>
                     <div class="form-group">
                         <label class="form-label">输入要查询的</label>
-                        <input type="text" class="form-control" v-model="inquire">
+                        <input type="text" class="form-control" v-model="inquire" v-focus v-color v-fontWidth>
                     </div>
                 </form>
                 <table class="table">
@@ -47,24 +52,32 @@
                         <tr v-for="ltem in inquires(inquire)" :key="ltem.id">
                             <th scope="row">{{ltem.id}}</th>
                             <td>{{ltem.name}}</td>
-                            <td>{{ltem.time}}</td>
+                            <td>{{ltem.time|timeFormatting}}</td>
                             <td><a href="javascript:;" @click.prevent="del(ltem.id)">删除</a></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>  
+        </div>
     </div>
 </body>
 
 </html>
 <script>
+    Vue.directive('color', {
+        // 当被绑定的元素插入到 DOM 中时……
+        inserted: function (el) {
+            // 聚焦元素
+            el.style.color = "red"
+        }
+    })
+    Vue.config.keyCodes.enter = 13
     var vm = new Vue({
         el: "#app",
         data: {
             id: "",
             name: "",
-            inquire:"",
+            inquire: "",
             information: [{
                     id: 1,
                     name: "盖聂",
@@ -94,26 +107,51 @@
         },
 
         methods: {
-            inquires (inquire){
+            inquires(inquire) {
                 var Array = []
                 this.information.forEach(element => {
-                    if(element.name.indexOf(inquire.trim()) != -1){
+                    if (element.name.indexOf(inquire.trim()) != -1) {
                         Array.push(element)
                     }
                 });
                 return Array
             },
             add() {
-                this.information.push({id:this.id,name:this.name,time:new Date()})
-                this.id= this.name=""
+                this.information.push({
+                    id: this.id,
+                    name: this.name,
+                    time: new Date()
+                })
+                this.id = this.name = ""
             },
             del(id) {
-                this.information.some((ltem,index) => {
-                    if(ltem.id == id){
-                        this.information.splice(index,1)
+                this.information.some((ltem, index) => {
+                    if (ltem.id == id) {
+                        this.information.splice(index, 1)
                         return true
                     }
                 })
+            }
+        },
+        filters: {
+            timeFormatting(time) {
+                function Appendzero(obj) {
+                    if (obj < 10) return "0" + "" + obj;
+                    else return obj;
+                }
+                console.log(time.getDate())
+                console.log(time.getDate().toString().padStart(2,"0"))
+                return Appendzero(time.getFullYear()) + "-" + Appendzero((time.getMonth() + 1)) + "-" + time.getDate().toString().padStart(2,"0") + "  " + (time.getHours().toString().padStart(2,"0")) + ":" + time.getMinutes().toString().padStart() + ":" + time.getSeconds().toString().padStart()
+            }
+        },
+        directives: {
+            focus : {
+                inserted(el){
+                    el.focus()
+                }
+            },
+            color (el){
+                el.style.color="pink"
             }
         }
     })

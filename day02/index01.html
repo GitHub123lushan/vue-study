@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,12 @@
     <title>Document</title>
     <script src="../vue.js"></script>
 </head>
+
 <body>
-    
+
     <div id="app">
-            <input type="button" @click="dong" value="动起来">
-            <input type="button" @click="stop" value="停">
+        <input type="button" @click="dong" value="动起来">
+        <input type="button" @click="stop" value="停">
         <p>{{msg}}</p>
     </div>
 
@@ -19,26 +21,27 @@
 
     <script>
         var vm = new Vue({
-            el:"#app",
-            data:{
-                msg:"12345567889003333227819264",
-                timeId:null
+            el: "#app",
+            data: {
+                msg: "12345567889003333227819264",
+                timeId: null
             },
-            methods:{
-                dong () {
+            methods: {
+                dong() {
                     clearInterval(this.timeId)
-                    this.timeId = setInterval(()=>{
-                        var header = this.msg.substr(0,1)
-                    var foor = this.msg.substr(1)
-                    this.msg = foor+header
-                    },300)
+                    this.timeId = setInterval(() => {
+                        var header = this.msg.substr(0, 1)
+                        var foor = this.msg.substr(1)
+                        this.msg = foor + header
+                    }, 300)
                 },
-                stop (){
+                stop() {
                     clearInterval(this.timeId)
                 }
-            }
+            },
+            
         })
-        
     </script>
 </body>
+
 </html>
