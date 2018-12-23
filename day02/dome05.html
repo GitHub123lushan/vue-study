@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./animate.css">
+    <script src="../vue.js"></script>
+    <style>
+    #app{
+        width: 900px;
+        margin: 50px auto
+    }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+            <input type="button" @click="add()" value="测试">
+            <button class="butt js--triggerAnimation" @click ="animated">Animate it</button>
+            <span id="animationSandbox" style="display: block;" :class="bounce"><h1 class="site__title mega">Animate.css</h1></span>
+            <transition enter-active-class="bounceIn" leave-active-class="bounceIn">
+                <p class="animated" v-if="flag" in-out>ddddddadsd</p>
+            </transition>
+            <transition enter-active-class="bounceIn" leave-active-class="bounceIn">
+                    <p class="animated" v-if="!flag" in-out>ddddddadsd</p>
+            </transition>
+    </div>
+    <script>
+        var vm =new Vue({
+            el:"#app",
+            data:{
+                flag:true,
+                fla:false,
+                bounce :""
+            },
+            methods: {
+                add(){
+                    this.flag = !this.flag
+                    this.fla = !this.fla
+                },
+                animated(){
+                    this.bounce ="shake animated"
+                    setTimeout(() => {
+                        this.bounce =""
+                    }, 1000);
+                }
+            }
+        })
+    
+    
+    </script>
+</body>
+</html>
