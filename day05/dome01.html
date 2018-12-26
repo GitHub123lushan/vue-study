@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <search @inti="initial"></search>
+        <ul class="list-group">
+                <li class="list-group-item" v-for="(item,index) in list" :key="index">
+                    <span class="badge">{{item.name}}</span>
+                    {{item.content}}
+                </li>
+            </ul>
+        <!-- <listgroup></listgroup> -->
+    </div>
+    <template id="search">
+        <form class="navbar-form" role="search">
+            <div class="form-group">
+                content:
+                <input type="text" class="form-control" placeholder="content" v-model="content">
+                name:
+                <input type="text" class="form-control" placeholder="name" v-model="name">
+            </div>
+            <button type="button" class="btn btn-default" @click.prevent="add">提交</button>
+        </form>
+    </template>
+    <!-- <template id="listgroup">
+        <ul class="list-group">
+            <li class="list-group-item" v-for="(item,index) in list" :key="index">
+                <span class="badge">{{item.name}}</span>
+                {{item.content}}
+            </li>
+        </ul>
+    </template> -->
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data:{
+                list:[
+                                {name:"张三",content:"返回实打实的收到了啥d"}
+                            ]
+            },
+            methods:{
+                
+                initial(){
+                            this.list=JSON.parse(localStorage.getItem("col"))
+                        }
+            },
+            created () {
+                        this.initial()
+                    },
+            components: {
+                search:{
+                    template:"#search",
+                    data () {
+                        return {
+                            name:"",
+                            content:"",
+                        }
+                    },
+                    methods: {
+                        add(){
+                            var col = localStorage.getItem("col") || "[]"
+                            var arr = JSON.parse(col)
+                            arr.push({name:this.name,content:this.content})
+                            var str=JSON.stringify(arr)
+                            localStorage.setItem("col",str)
+                            this.name=this.content=""
+                            this.$emit("inti")
+                        }
+                    }
+                },
+                // listgroup:{
+                //     template:"#listgroup",
+                //     data () {
+                //         return {
+                //             list:[
+                //                 {name:"张三",content:"返回实打实的收到了啥d"}
+                //             ]
+                //         }
+                //     },
+                //     methods:{
+                //         initial(){
+                //             this.list=JSON.parse(localStorage.getItem("col"))
+                //         },
+                        
+                //     },
+                //     created () {
+                //         this.initial()
+                //     }
+                // }
+            }
+        })
+    </script>
+</body>
+
+</html>
